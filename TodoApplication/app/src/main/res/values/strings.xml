@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Todo Application</string>
+    <string name="new_item_hint_text">Enter new item</string>
+    <string name="new_item_button_text">Add</string>
 </resources>
