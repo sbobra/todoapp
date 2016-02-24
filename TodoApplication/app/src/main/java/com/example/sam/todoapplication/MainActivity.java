@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         todoListView = (ListView) findViewById(R.id.todoListView);
         items = new ArrayList<>();
-        listViewItemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        listViewItemsAdapter = new ArrayAdapter<>(this, R.layout.custom_list_view_item, items);
         todoListView.setAdapter(listViewItemsAdapter);
         readItems();
 
