@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +36,23 @@ public class MainActivity extends AppCompatActivity {
                 addToDoItem();
                 saveItems();
             }
+        });
+
+        setRemoveItemOnLongClickListener();
+    }
+
+    void setRemoveItemOnLongClickListener() {
+        todoListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
+                // Remove the item within array at position
+                items.remove(pos);
+                // Refresh the adapter
+                listViewItemsAdapter.notifyDataSetChanged();
+                // Return true consumes the long click event (marks it handled)
+                return true;
+            }
+
         });
     }
 
