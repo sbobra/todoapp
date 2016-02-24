@@ -3,8 +3,10 @@ package com.example.sam.todoapplication;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.apache.commons.io.FileUtils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     ListView todoListView;
     ArrayList<String> items;
     ArrayAdapter<String> listViewItemsAdapter;
+    // REQUEST_CODE can be any value we like, used to determine the result type later
+    public static final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setRemoveItemOnLongClickListener();
+        setOnItemClickListener();
     }
 
     void setRemoveItemOnLongClickListener() {
@@ -53,6 +58,31 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            // Extract name and position values from result extras
+            String editedTask = data.getExtras().getString("editedTask");
+            int position = data.getExtras().getInt("position");
+
+            items.set(position, editedTask);
+            listViewItemsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    void setOnItemClickListener() {
+        todoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(MainActivity.this, EditActivity.class);
+                i.putExtra("itemToEdit", listViewItemsAdapter.getItem(position));
+                i.putExtra("position", position);
+                startActivityForResult(i, REQUEST_CODE);
+            }
         });
     }
 
